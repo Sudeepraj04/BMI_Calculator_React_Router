@@ -1,5 +1,5 @@
 # Ex06 BMI Calculator
-## Date: 
+## Date: 29-05-2026
 
 ## AIM
 To develop a responsive and interactive Body Mass Index (BMI) Calculator using React that allows users to input their height and weight, and calculates their BMI to categorize their health status (e.g., Underweight, Normal, Overweight, Obese).
@@ -64,10 +64,497 @@ Create routing structure with react-router-dom:
 <li>Add styling using CSS or Tailwind.</li>
 
 ## PROGRAM
+### APP.jsx
+```
+import React, { useState } from "react";
+import "./App.css";
+
+function App() {
+
+  const [weight, setWeight] = useState("");
+
+  const [height, setHeight] = useState("");
+
+  const [bmi, setBmi] = useState(null);
+
+  const [category, setCategory] = useState("");
+
+  const calculateBMI = () => {
+
+    if (
+      !weight ||
+      !height ||
+      weight <= 0 ||
+      height <= 0
+    ) {
+
+      alert("Enter valid values");
+
+      return;
+
+    }
+
+    const heightInMeters =
+      height / 100;
+
+    const result = (
+
+      weight /
+
+      (
+
+        heightInMeters *
+        heightInMeters
+
+      )
+
+    ).toFixed(2);
+
+    setBmi(result);
+
+    if (result < 18.5) {
+
+      setCategory(
+        "Underweight"
+      );
+
+    }
+
+    else if (result < 24.9) {
+
+      setCategory(
+        "Normal Weight"
+      );
+
+    }
+
+    else if (result < 29.9) {
+
+      setCategory(
+        "Overweight"
+      );
+
+    }
+
+    else {
+
+      setCategory(
+        "Obesity"
+      );
+
+    }
+
+  };
+
+  return (
+
+    <div className="page">
+
+      <div className="card">
+
+        <h1>
+
+          BMI Calculator ⚡
+
+        </h1>
+
+        <p className="subtitle">
+
+          Check your body mass index instantly
+
+        </p>
+
+        <input
+
+          type="number"
+
+          placeholder="Weight (kg)"
+
+          value={weight}
+
+          onChange={(e) =>
+
+            setWeight(
+              e.target.value
+            )
+
+          }
+
+        />
+
+        <input
+
+          type="number"
+
+          placeholder="Height (cm)"
+
+          value={height}
+
+          onChange={(e) =>
+
+            setHeight(
+              e.target.value
+            )
+
+          }
+
+        />
+
+        <button
+
+          onClick={calculateBMI}
+
+        >
+
+          Calculate BMI
+
+        </button>
+
+        {
+
+          bmi && (
+
+            <div className="result">
+
+              <h2>
+
+                BMI : {bmi}
+
+              </h2>
+
+              <h3>
+
+                {category}
+
+              </h3>
+
+            </div>
+
+          )
+
+        }
+
+      </div>
+
+    </div>
+
+  );
+
+}
+
+export default App;
+```
+### Home.jsx:
+```
+import React from "react";
+
+import { Link } from "react-router-dom";
+
+function Home() {
+
+  return (
+
+    <div className="page">
+
+      <div className="card">
+
+        <p className="subtitle">
+
+          Measure your BMI and stay healthy
+
+        </p>
+
+        <Link to="/calculate">
+
+          <button>
+
+            Start Calculator
+
+          </button>
+
+        </Link>
+
+      </div>
+
+    </div>
+
+  );
+
+}
+
+export default Home;
+```
+### main.jsx:
+```
+import React from "react";
+
+import ReactDOM from "react-dom/client";
+
+import App from "./App";
+
+ReactDOM.createRoot(
+
+  document.getElementById("root")
+
+).render(
+
+  <React.StrictMode>
+
+    <App />
+
+  </React.StrictMode>
+
+);
+```
+### app.css:
+```
+* {
+
+  margin: 0;
+
+  padding: 0;
+
+  box-sizing: border-box;
+
+}
+
+html,
+body,
+#root {
+
+  width: 100%;
+
+  height: 100%;
+
+  font-family:
+
+    Segoe UI,
+
+    sans-serif;
+
+  overflow: hidden;
+
+}
+
+body {
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #1e1b4b,
+      #312e81,
+      #000000
+    );
+
+  background-size:
+
+    400% 400%;
+
+  animation:
+
+    gradient 12s ease infinite;
+
+}
+
+@keyframes gradient {
+
+  0% {
+
+    background-position:
+
+      0% 50%;
+
+  }
+
+  50% {
+
+    background-position:
+
+      100% 50%;
+
+  }
+
+  100% {
+
+    background-position:
+
+      0% 50%;
+
+  }
+
+}
+
+.page {
+
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 20px;
+
+}
+
+.card {
+
+  background:
+
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    );
+
+  padding: 40px;
+
+  border-radius: 22px;
+
+  box-shadow:
+
+    0px 10px 35px
+
+    rgba(
+      0,
+      0,
+      0,
+      0.35
+    );
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 18px;
+
+  min-width: 380px;
+
+  color: #222;
+
+}
+
+.card h1 {
+
+  font-size: 2.2rem;
+
+  color: #222;
+
+}
+
+.subtitle {
+
+  color: #555;
+
+}
+
+input {
+
+  width: 260px;
+
+  padding: 14px;
+
+  border:
+
+    1px solid #ccc;
+
+  border-radius: 10px;
+
+  font-size: 16px;
+
+  outline: none;
+
+  transition: .3s;
+
+}
+
+input:focus {
+
+  border:
+
+    1px solid #7c3aed;
+
+  box-shadow:
+
+    0 0 8px
+
+    rgba(
+      124,
+      58,
+      237,
+      0.4
+    );
+
+}
+
+button {
+
+  padding:
+
+    14px 28px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background:
+
+    #7c3aed;
+
+  color: white;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition: .3s;
+
+}
+
+button:hover {
+
+  transform:
+
+    translateY(-2px);
+
+  background:
+
+    #6d28d9;
+
+}
+
+.result {
+
+  margin-top: 15px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  align-items: center;
+
+  color: #222;
+
+}
+```
 
 
 
 ## OUTPUT
+
+<img width="1919" height="1024" alt="Screenshot 2026-05-31 142019" src="https://github.com/user-attachments/assets/befc121d-1890-4d2b-b068-63e7ae35041c" />
+<img width="1919" height="998" alt="Screenshot 2026-05-31 142127" src="https://github.com/user-attachments/assets/54ab5db8-b9a5-4d66-bd44-4988b104f589" />
+<img width="1919" height="1024" alt="Screenshot 2026-05-31 142019" src="https://github.com/user-attachments/assets/88b579e6-8f94-4ec1-b4f1-5c26fccbf32e" />
 
 
 
